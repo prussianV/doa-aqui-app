@@ -1,0 +1,30 @@
+%% Figura 5 · Diagrama de pacotes (módulos de app/src)
+flowchart TB
+  subgraph APRES["Apresentação"]
+    direction LR
+    NAV["navegacao/<br/>pilha, abas, fluxo<br/>de anúncio e links"]
+    TELAS["telas/<br/>Início, Busca, Detalhe,<br/>Anunciar, Meus itens,<br/>Conta, Admin, login"]
+    COMP["componentes/<br/>base, anuncio, folhas,<br/>estrutura, formulario"]
+    TEMA["tema/<br/>cores, fontes,<br/>espaços"]
+  end
+  subgraph APLIC["Aplicação"]
+    direction LR
+    EST["estado/<br/>SessaoContexto,<br/>RascunhoContexto,<br/>useConsulta"]
+    SERV["servicos/<br/>autenticacao, anuncios,<br/>interesses, administracao,<br/>erros"]
+  end
+  subgraph DOM["Domínio no cliente"]
+    NEG["negocio/<br/>tipos, regras,<br/>catalogo"]
+  end
+  subgraph INFRA["Integração"]
+    LIB["lib/ e config<br/>supabase (cliente),<br/>preferencias"]
+  end
+  NAV --> TELAS
+  TELAS --> COMP
+  TELAS --> EST
+  TELAS --> SERV
+  COMP --> TEMA
+  COMP --> NEG
+  EST --> SERV
+  SERV --> NEG
+  SERV --> LIB
+  EST --> LIB

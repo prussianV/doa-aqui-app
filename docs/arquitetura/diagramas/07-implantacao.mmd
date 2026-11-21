@@ -1,0 +1,28 @@
+%% Figura 7 · Diagrama de implantação
+flowchart TB
+  subgraph N0["«nó» Computador"]
+    direction LR
+    GR["«ferramenta»<br/>Gradle + Android SDK<br/>(JDK 17, NDK)"]
+    MT["«processo»<br/>Metro (porta 8081)<br/>só em desenvolvimento"]
+    EM["«dispositivo virtual»<br/>Emulador Android 15<br/>DoaAqui_Pixel"]
+  end
+  subgraph N1["«dispositivo» Celular"]
+    APK["«artefato» app-release.apk<br/>Android 7.0+ · br.fatec.doaaqui<br/>código nativo + JavaScript (Hermes)"]
+  end
+  subgraph N4["«nó» GitHub"]
+    REPO["«repositório»<br/>prussianV/doa-aqui-app"]
+  end
+  subgraph N3["«nó» Supabase · sa-east-1"]
+    direction LR
+    K["«serviço»<br/>Supabase Auth"]
+    R["«serviço»<br/>PostgREST"]
+    DB[("«banco» PostgreSQL 17<br/>projeto compartilhado<br/>achado-tecnico")]
+    K --- DB
+    R --- DB
+  end
+  REPO -- "git clone" --> N0
+  GR -- "gera e instala o APK (adb)" --> EM
+  GR -- "APK (instalação direta)" --> N1
+  MT -. "pacote JavaScript (debug)" .-> EM
+  EM -- "HTTPS + JSON: autenticação e dados" --> N3
+  N1 -- "HTTPS + JSON: autenticação e dados" --> N3

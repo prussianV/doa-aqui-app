@@ -1,0 +1,45 @@
+%% Figura 6 · Diagrama de componentes da implementação
+flowchart TB
+  subgraph CLIENTE["app/ · React Native"]
+    direction TB
+    NAVS["Navegação (src/navegacao)<br/>pilha principal, abas, links doaaqui://"]
+    subgraph TELAS["Telas (src/telas)"]
+      direction LR
+      T1["Públicas<br/>Início, Busca, Detalhe"]
+      T4["Entrar / Cadastro /<br/>Senha"]
+      T2["Autenticadas<br/>Anunciar, Meus itens,<br/>Interessados, Conta"]
+      T3["Admin<br/>(papel ADMINISTRADOR)"]
+    end
+    CTX["SessaoContexto<br/>sessão, perfil, categorias"]
+    subgraph SERV["Serviços (src/servicos)"]
+      direction LR
+      S1["autenticacao"]
+      S2["anuncios"]
+      S3["interesses"]
+      S4["administracao"]
+    end
+    SB["lib/supabase<br/>createClient + AsyncStorage"]
+    NAT["Projetos nativos<br/>android/ (Gradle) e ios/"]
+    NAVS --> TELAS
+    T4 --> S1
+    T1 --> S2
+    T2 --> S2
+    T2 --> S3
+    T3 --> S4
+    TELAS --> CTX
+    CTX --> S1
+    SERV --> SB
+  end
+  subgraph SUPA["Supabase"]
+    direction LR
+    IAUTH[["Auth<br/>signUp, signInWithPassword, signOut,<br/>updateUser, resetPasswordForEmail"]]
+    IREST[["REST<br/>/rest/v1/anuncio, anuncio_contato,<br/>categoria, interesse, usuario"]]
+    IRPC[["RPC<br/>criar_meu_perfil, meu_perfil,<br/>listar_interessados, admin_*"]]
+    DB[("PostgreSQL<br/>RLS + gatilho + funções")]
+    IAUTH --> DB
+    IREST --> DB
+    IRPC --> DB
+  end
+  SB --> IAUTH
+  SB --> IREST
+  SB --> IRPC

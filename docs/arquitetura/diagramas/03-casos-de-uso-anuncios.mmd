@@ -1,0 +1,26 @@
+%% Figura 3 · Casos de uso · Anúncios, Consulta e Doação (UC-04 a UC-10)
+flowchart LR
+  V["«ator»<br/>Visitante"]
+  subgraph S["Doa Aqui · Anúncios, Consulta e Doação"]
+    direction TB
+    UC4(["UC-04<br/>Pesquisar anúncios"])
+    UC5(["UC-05<br/>Consultar anúncio"])
+    UC6(["UC-06<br/>Manifestar interesse"])
+    UC7(["UC-07<br/>Publicar anúncio"])
+    UC8(["UC-08<br/>Gerenciar anúncio"])
+    UC9(["UC-09<br/>Ver interessados"])
+    UC10(["UC-10<br/>Concluir doação"])
+  end
+  U["«ator»<br/>Usuário autenticado"]
+  PF["«ator»<br/>Pessoa física"]
+  ONG["«ator»<br/>ONG / Instituição"]
+  V --- UC4
+  V --- UC5
+  UC6 -. "«extend»" .-> UC5
+  U --- UC6
+  U --- UC7
+  U --- UC8
+  U --- UC9
+  U --- UC10
+  PF -- "generalização" --> U
+  ONG -- "generalização" --> U

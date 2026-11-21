@@ -1,0 +1,24 @@
+%% Figura 12 · Sequência · Gerenciar e concluir doação (UC-08, UC-10)
+sequenceDiagram
+  autonumber
+  actor D as Anunciante
+  participant T as Meus anúncios / Detalhe
+  participant S as servicos/anuncios
+  participant API as PostgREST
+  participant DB as PostgreSQL
+  D->>T: Gerenciar → "Marcar como doado"
+  T-->>D: Confirmação ("não pode mais ser editado")
+  D->>T: Confirma
+  T->>S: concluir(id)
+  S->>API: PATCH /anuncio?id=eq.{id} {status: DOADO}
+  API->>DB: UPDATE sob RLS
+  DB->>DB: RLS de UPDATE: dono = auth.uid() e conta ativa (RN-05)
+  DB->>DB: Gatilho validar_anuncio(): DISPONIVEL → DOADO, grava concluido_em
+  alt não é o dono
+    DB-->>S: nenhuma linha alterada
+    S-->>T: "Você não tem permissão"
+  else permitido
+    DB-->>T: status DOADO
+    T-->>D: "Doação concluída" — some da pesquisa pública (RN-06, RN-08)
+  end
+  Note over D,DB: Desativar (UC-08) segue o mesmo caminho com status INATIVO. O gatilho grava inativado_por = PROPRIETARIO. Não há reativação.

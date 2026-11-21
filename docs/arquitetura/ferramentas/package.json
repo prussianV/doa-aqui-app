@@ -1,0 +1,15 @@
+{
+  "name": "doa-aqui-docs",
+  "private": true,
+  "type": "module",
+  "description": "Ferramentas para gerar as imagens dos diagramas e o Documento de Arquitetura (DOCX).",
+  "scripts": {
+    "diagramas": "node renderizar-diagramas.mjs",
+    "documento": "node gerar-documento.mjs"
+  },
+  "dependencies": {
+    "docx": "9.5.1",
+    "mermaid": "11.4.1",
+    "puppeteer-core": "24.10.0"
+  }
+}

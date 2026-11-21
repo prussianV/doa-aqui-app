@@ -1,0 +1,24 @@
+%% Figura 13 · Sequência · Moderar anúncios (UC-11)
+sequenceDiagram
+  autonumber
+  actor A as Administrador
+  participant T as Aba Admin · Anúncios
+  participant S as servicos/administracao
+  participant API as PostgREST
+  participant DB as PostgreSQL
+  A->>T: Abre a moderação (filtro por situação)
+  T->>S: listarAnuncios(status)
+  S->>API: GET /anuncio (todas as situações)
+  API->>DB: RLS de SELECT: e_admin() libera qualquer situação (RF-010)
+  DB-->>T: anúncios + responsável + nº de interessados
+  A->>T: "Desativar anúncio" e confirma
+  T->>S: desativarAnuncio(id)
+  S->>API: POST /rpc/admin_desativar_anuncio
+  API->>DB: função verifica e_admin()
+  alt não é administrador ativo
+    DB-->>S: 42501 "Acesso restrito ao administrador"
+  else administrador
+    DB->>DB: UPDATE status = INATIVO
+    DB->>DB: Gatilho grava inativado_por = ADMINISTRADOR
+    DB-->>T: OK → anúncio fora da pesquisa
+  end

@@ -1,0 +1,30 @@
+%% Figura 1 · Diagrama geral de arquitetura do Doa Aqui (aplicativo React Native + Supabase)
+flowchart TB
+  subgraph USR["Dispositivo do usuário"]
+    direction LR
+    AND["Celular Android 7.0+<br/>ou emulador no computador"]
+    IOS["iPhone (iOS)<br/>possível; requer macOS"]
+  end
+
+  subgraph APP["App React Native"]
+    direction LR
+    UI["Apresentação<br/>React Navigation: telas,<br/>componentes e tema"]
+    EST["Estado<br/>SessaoContexto,<br/>useConsulta"]
+    SRV["Serviços da aplicação<br/>autenticacao, anuncios,<br/>interesses, administracao"]
+    CLI["Cliente<br/>supabase-js + AsyncStorage"]
+    UI --> EST --> SRV --> CLI
+  end
+
+  subgraph SUPA["Supabase (BaaS)"]
+    direction LR
+    AUTH["Supabase Auth<br/>contas, hash de senha, JWT"]
+    REST["API de dados (PostgREST)<br/>tabelas e funções RPC"]
+    PG[("PostgreSQL 17<br/>tabelas + RLS + gatilho + funções")]
+    AUTH --> PG
+    REST --> PG
+  end
+
+  AND -- "executa o app instalado" --> APP
+  IOS -. "mesmo código-fonte" .-> APP
+  CLI -- "HTTPS + JSON (chave pública + JWT)" --> AUTH
+  CLI -- "HTTPS + JSON (chave pública + JWT)" --> REST

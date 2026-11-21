@@ -1,0 +1,52 @@
+%% Figura 16 · Diagrama entidade-relacionamento (PostgreSQL / Supabase)
+erDiagram
+  AUTH_USERS ||--o| USUARIO : "possui perfil (1:0..1)"
+  USUARIO ||--o{ ANUNCIO : "publica (1:N)"
+  CATEGORIA ||--o{ ANUNCIO : "classifica (1:N)"
+  USUARIO ||--o{ INTERESSE : "registra (1:N)"
+  ANUNCIO ||--o{ INTERESSE : "recebe (1:N)"
+  ANUNCIO ||--o| ANUNCIO_CONTATO : "tem contato (1:0..1)"
+
+  AUTH_USERS {
+    uuid id PK
+    text email UK "único (RN-01)"
+    text encrypted_password "hash, gerenciado pelo Supabase Auth"
+  }
+  USUARIO {
+    uuid id PK,FK "= auth.users.id"
+    text nome "2 a 100"
+    text tipo "PESSOA_FISICA | ONG"
+    text papel "USUARIO | ADMINISTRADOR"
+    text situacao "ATIVA | BLOQUEADA"
+    timestamptz criado_em
+  }
+  CATEGORIA {
+    smallint id PK
+    text nome UK
+    text slug UK
+  }
+  ANUNCIO {
+    bigint id PK
+    uuid usuario_id FK
+    smallint categoria_id FK
+    text titulo "3 a 60"
+    text descricao "10 a 500"
+    text cidade "2 a 80"
+    char2 uf "27 UFs"
+    text status "DISPONIVEL | DOADO | INATIVO"
+    text inativado_por "PROPRIETARIO | ADMINISTRADOR | nulo"
+    timestamptz criado_em
+    timestamptz atualizado_em
+    timestamptz concluido_em
+  }
+  ANUNCIO_CONTATO {
+    bigint anuncio_id PK,FK "= anuncio.id"
+    text telefone "DDD + número, só dígitos (DA-10)"
+  }
+  INTERESSE {
+    bigint id PK
+    bigint anuncio_id FK "UK com usuario_id (RN-04)"
+    uuid usuario_id FK
+    boolean autoriza_email "RN-07"
+    timestamptz criado_em
+  }

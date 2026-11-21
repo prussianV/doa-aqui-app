@@ -1,0 +1,40 @@
+%% Figura 8 · Sequência · Cadastrar conta, realizar login e logout (UC-01, UC-02, UC-03)
+sequenceDiagram
+  autonumber
+  actor P as Pessoa
+  participant T as Telas Cadastro / Entrar
+  participant S as servicos/autenticacao
+  participant A as Supabase Auth
+  participant DB as PostgreSQL (RPC + RLS)
+  P->>T: Preenche nome, e-mail, senha e tipo
+  T->>T: validarCadastro() (RNF-005)
+  T->>S: cadastrar(dados)
+  S->>A: signUp(email, senha, metadados nome/tipo)
+  alt e-mail já cadastrado (RN-01)
+    A-->>S: usuário sem identidades
+    S-->>T: "Este e-mail já tem cadastro"
+  else conta criada, confirmação de e-mail ligada no projeto
+    A-->>S: sem sessão
+    S-->>T: "Confirme seu e-mail"
+  end
+  Note over P,A: A pessoa confirma pelo link enviado pelo Supabase
+  P->>T: Informa e-mail e senha
+  T->>S: entrar(email, senha)
+  S->>A: signInWithPassword()
+  A-->>S: sessão com JWT (senha nunca retorna, RNF-002)
+  S->>DB: rpc meu_perfil()
+  opt primeiro acesso: perfil inexistente
+    S->>DB: rpc criar_meu_perfil(nome, tipo)
+    S->>DB: rpc meu_perfil()
+  end
+  DB-->>S: perfil (papel, situação)
+  alt situação BLOQUEADA (RF-011)
+    S->>A: signOut()
+    S-->>T: "Sua conta está bloqueada"
+  else conta ativa
+    S-->>T: perfil
+    T-->>P: Área autenticada liberada
+  end
+  P->>T: Sair da conta (UC-03)
+  T->>S: sair()
+  S->>A: signOut() — sessão removida do aparelho

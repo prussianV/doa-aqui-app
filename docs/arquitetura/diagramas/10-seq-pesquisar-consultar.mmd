@@ -1,0 +1,25 @@
+%% Figura 10 · Sequência · Pesquisar e consultar anúncio (UC-04, UC-05)
+sequenceDiagram
+  autonumber
+  actor V as Visitante ou usuário
+  participant T as Início / Busca / Detalhe
+  participant S as servicos/anuncios
+  participant API as PostgREST
+  participant DB as PostgreSQL
+  V->>T: Escolhe categoria, UF, cidade ou digita termo
+  T->>S: pesquisar(filtros)
+  S->>API: GET /anuncio?status=eq.DISPONIVEL&categoria_id&uf&cidade=ilike
+  API->>DB: SELECT com anuncio + categoria(nome) + usuario(nome, tipo)
+  DB->>DB: RLS de SELECT: público vê só DISPONIVEL (RN-06)
+  DB-->>API: lista (índice status, categoria_id, uf)
+  API-->>T: anúncios disponíveis
+  V->>T: Abre um anúncio
+  T->>S: obter(id)
+  S->>API: GET /anuncio?id=eq.{id}
+  API->>DB: SELECT sob RLS
+  alt anúncio disponível (ou do próprio usuário)
+    DB-->>T: descrição, categoria, cidade/UF, situação, responsável (RF-005)
+  else concluído ou inativo de terceiro
+    DB-->>T: nenhuma linha
+    T-->>V: "Anúncio não encontrado"
+  end

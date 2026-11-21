@@ -1,0 +1,38 @@
+%% Figura · Sequência · Trocar senha na conta e redefinir pelo e-mail (funcionalidade adicional, DA-09)
+sequenceDiagram
+  autonumber
+  actor P as Pessoa
+  participant T as Telas de senha
+  participant S as servicos/autenticacao
+  participant A as Supabase Auth
+  Note over P,A: Trocar senha com a sessão aberta (Conta → Trocar senha)
+  P->>T: Senha atual, nova senha e confirmação
+  T->>T: validarNovaSenha()
+  T->>S: trocarSenha(email, atual, nova)
+  S->>A: signInWithPassword(email, atual)
+  alt senha atual incorreta
+    A-->>S: credenciais inválidas
+    S-->>T: "A senha atual não confere"
+  else senha atual confirmada
+    S->>A: updateUser(nova senha)
+    A-->>S: grava só o hash (RNF-002)
+    S-->>T: "Senha alterada"
+  end
+  Note over P,A: Esqueci minha senha (sem sessão)
+  P->>T: Informa o e-mail
+  T->>S: pedirRedefinicaoSenha(email)
+  S->>A: resetPasswordForEmail(email, redirectTo doaaqui://nova-senha)
+  A-->>P: E-mail com link de uso único
+  T-->>P: "Confira seu e-mail" (não revela se a conta existe)
+  P->>T: Toca no link doaaqui://nova-senha → o celular abre o app na tela Nova senha
+  T->>S: abrirSessaoDeRecuperacao(url)
+  alt link expirado ou já usado
+    S-->>T: "Link inválido" e opção de pedir outro
+  else tokens válidos
+    S->>A: setSession / exchangeCodeForSession
+    T->>T: descarta os tokens dos parâmetros da tela
+    P->>T: Nova senha e confirmação
+    T->>S: definirNovaSenha(nova)
+    S->>A: updateUser(nova senha)
+    T-->>P: Senha alterada, a pessoa já entra na conta
+  end

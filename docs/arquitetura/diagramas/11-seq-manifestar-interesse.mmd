@@ -1,0 +1,34 @@
+%% Figura 11 · Sequência · Manifestar interesse e ver interessados (UC-06, UC-09)
+sequenceDiagram
+  autonumber
+  actor I as Interessado
+  actor D as Anunciante
+  participant T as Detalhe / Interessados
+  participant S as servicos/interesses
+  participant API as PostgREST
+  participant DB as PostgreSQL
+  I->>T: "Tenho interesse"
+  T-->>I: Folha com caixa "Autorizo mostrar meu e-mail" (RN-07)
+  I->>T: Confirma (com ou sem autorização)
+  T->>S: manifestar(anuncioId, autorizaEmail)
+  S->>API: POST /interesse
+  API->>DB: INSERT com usuario_id = auth.uid()
+  DB->>DB: RLS: conta ativa e anuncio_aceita_interesse() — disponível e de terceiro (RN-03)
+  DB->>DB: UNIQUE (anuncio_id, usuario_id) (RN-04)
+  alt anúncio próprio ou indisponível
+    DB-->>T: 42501 → "Este anúncio não aceita mais interesse"
+  else interesse repetido
+    DB-->>T: 23505 → "Você já demonstrou interesse"
+  else registrado
+    DB-->>T: OK → "Interesse registrado!"
+    T->>API: GET /anuncio_contato (anuncios.obterContato)
+    API->>DB: RLS: pode_ver_contato() — dono, interessado ativo ou administrador
+    DB-->>T: telefone, se o doador informou (funcionalidade adicional, DA-10)
+    T-->>I: Cartão "Contato de quem anunciou" com Ligar e WhatsApp
+  end
+  D->>T: Meus anúncios → Ver interessados
+  T->>S: listarInteressados(anuncioId)
+  S->>API: POST /rpc/listar_interessados
+  API->>DB: função verifica dono e conta ativa (RF-007)
+  DB-->>T: nome, tipo, data e e-mail somente quando autoriza_email = true
+  D-->>I: Contato (telefone ou e-mail autorizado) e entrega combinados fora da plataforma

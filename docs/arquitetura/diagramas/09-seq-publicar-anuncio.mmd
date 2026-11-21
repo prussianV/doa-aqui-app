@@ -1,0 +1,27 @@
+%% Figura 9 · Sequência · Publicar anúncio (UC-07)
+sequenceDiagram
+  autonumber
+  actor U as Usuário autenticado
+  participant F as Formulário Anunciar (2 passos)
+  participant S as servicos/anuncios
+  participant API as PostgREST
+  participant DB as PostgreSQL
+  U->>F: Título, categoria, descrição
+  F->>F: validarDetalhes()
+  U->>F: Cidade e UF
+  F->>F: validarLocal()
+  F->>S: publicar(dados)
+  S->>API: POST /anuncio (JWT do usuário)
+  API->>DB: INSERT com usuario_id = auth.uid() e status DISPONIVEL (padrões)
+  DB->>DB: Política RLS de INSERT: dono = auth.uid(), conta ativa (RN-02)
+  DB->>DB: CHECKs: título 3–60, descrição 10–500, UF válida
+  alt violação
+    DB-->>API: erro 42501 ou 23514
+    API-->>S: erro
+    S-->>F: mensagem compreensível (RNF-005)
+  else válido
+    DB-->>API: anúncio criado
+    API-->>S: anúncio
+    S-->>F: anúncio
+    F-->>U: "Anúncio publicado!"
+  end

@@ -1,0 +1,24 @@
+%% Figura 14 · Sequência · Bloquear e desbloquear usuário (UC-12)
+sequenceDiagram
+  autonumber
+  actor A as Administrador
+  actor U as Usuário bloqueado
+  participant T as Aba Admin · Usuários
+  participant S as servicos/administracao
+  participant DB as PostgreSQL (RPC + RLS)
+  A->>T: Abre a lista de usuários
+  T->>S: listarUsuarios()
+  S->>DB: rpc admin_listar_usuarios() — verifica e_admin()
+  DB-->>T: nome, e-mail, tipo, papel, situação, nº de anúncios
+  A->>T: "Bloquear" e confirma
+  T->>S: definirSituacao(id, BLOQUEADA)
+  S->>DB: rpc admin_definir_situacao() — não permite alterar a própria conta
+  DB-->>T: situação = BLOQUEADA
+  U->>DB: tenta publicar ou manifestar interesse
+  DB-->>U: recusado: conta_ativa() falsa nas políticas RLS
+  U->>DB: novo login → meu_perfil()
+  DB-->>U: situação BLOQUEADA → app encerra a sessão
+  A->>T: "Desbloquear"
+  T->>S: definirSituacao(id, ATIVA)
+  S->>DB: rpc admin_definir_situacao()
+  DB-->>T: situação = ATIVA — acesso restabelecido

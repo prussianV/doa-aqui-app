@@ -1,0 +1,14 @@
+%% Figura 15 · Diagrama de estados do anúncio (RN-06)
+stateDiagram-v2
+  direction TB
+  DISPONIVEL: DISPONIVEL<br/>(editável pelo proprietário, UC-08)
+  [*] --> DISPONIVEL: publicar (UC-07)
+  DISPONIVEL --> DOADO: concluir doação<br/>(UC-10, proprietário)
+  DISPONIVEL --> INATIVO: desativar<br/>(UC-08 proprietário ou UC-11 administrador)
+  DOADO --> INATIVO: desativar<br/>(UC-11, administrador)
+  note right of DISPONIVEL
+    Única situação exibida na pesquisa pública
+  end note
+  note right of INATIVO
+    Sem reativação e sem exclusão física no MVP
+  end note

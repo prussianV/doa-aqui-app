@@ -1,0 +1,13 @@
+%% Figura 2 · Casos de uso · Conta e Acesso (UC-01 a UC-03)
+flowchart LR
+  V["«ator»<br/>Visitante"]
+  U["«ator»<br/>Usuário autenticado"]
+  subgraph S["Doa Aqui · Conta e Acesso"]
+    direction TB
+    UC1(["UC-01<br/>Cadastrar conta"])
+    UC2(["UC-02<br/>Realizar login"])
+    UC3(["UC-03<br/>Realizar logout"])
+  end
+  V --- UC1
+  V --- UC2
+  U --- UC3

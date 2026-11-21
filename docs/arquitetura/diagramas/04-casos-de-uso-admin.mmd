@@ -1,0 +1,10 @@
+%% Figura 4 · Casos de uso · Administração (UC-11 e UC-12)
+flowchart LR
+  subgraph S["Doa Aqui · Administração"]
+    direction TB
+    UC11(["UC-11<br/>Moderar anúncios"])
+    UC12(["UC-12<br/>Gerenciar usuários<br/>(bloquear / desbloquear)"])
+  end
+  A["«ator»<br/>Administrador"]
+  A --- UC11
+  A --- UC12
