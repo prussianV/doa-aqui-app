@@ -10,8 +10,13 @@ AVD="${AVD:-DoaAqui_Pixel}"
 APK=android/app/build/outputs/apk/release/app-release.apk
 
 if [ ! -f "$APK" ]; then
-  echo "Gerando o APK de release (na primeira vez leva alguns minutos)..."
-  (cd android && ./gradlew assembleRelease)
+  if adb devices 2>/dev/null | grep -q "^emulator-"; then
+    echo "Feche o emulador antes de gerar o APK: compilar com o emulador aberto pode esgotar a memória."
+    exit 1
+  fi
+  echo "Gerando o APK de release para o emulador (x86_64). Na primeira vez leva de 10 a 20 minutos."
+  echo "Feche outros programas pesados enquanto isso."
+  (cd android && ./gradlew assembleRelease -PreactNativeArchitectures=x86_64 && ./gradlew --stop)
 fi
 
 if ! adb devices | grep -q "^emulator-"; then

@@ -7,11 +7,12 @@
     "android": "bash scripts/com-ambiente.sh react-native run-android --active-arch-only",
     "ios": "react-native run-ios",
     "emulador": "bash scripts/com-ambiente.sh emulator -avd DoaAqui_Pixel -no-boot-anim",
-    "apk": "cd android && bash ../scripts/com-ambiente.sh ./gradlew assembleRelease",
+    "apk": "cd android && bash ../scripts/com-ambiente.sh ./gradlew assembleRelease -PreactNativeArchitectures=x86_64",
     "apresentar": "bash scripts/apresentar.sh",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "apk:celular": "cd android && bash ../scripts/com-ambiente.sh ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
