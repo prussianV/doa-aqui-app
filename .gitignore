@@ -1,0 +1,15 @@
+# Ferramentas locais
+.claude/
+.vscode/
+.idea/
+*.log
+
+# Segredos e dados de teste locais (contas de teste dos testes de autorização)
+.env
+.env.*
+!.env.example
+
+# Dependências
+node_modules/
+
+# O app tem o próprio .gitignore em app/.gitignore (builds do Android/iOS, local.properties, Pods).
