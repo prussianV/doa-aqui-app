@@ -1,0 +1,33 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Nunito_800ExtraBold.ttf",
+      "sha1": "37ba2b2e9e7dd74a67b8b994a1aebe333af7fc39"
+    },
+    {
+      "path": "src/assets/fonts/Nunito_900Black.ttf",
+      "sha1": "bede9c89e905ae0b91404768e1167e3e5d3c9c8e"
+    },
+    {
+      "path": "src/assets/fonts/PlusJakartaSans_400Regular.ttf",
+      "sha1": "ea07d33f23fb6c4856a642d035c463dc99a7f88a"
+    },
+    {
+      "path": "src/assets/fonts/PlusJakartaSans_500Medium.ttf",
+      "sha1": "c328c76cab7078b89d925d73809f03c12a00143a"
+    },
+    {
+      "path": "src/assets/fonts/PlusJakartaSans_600SemiBold.ttf",
+      "sha1": "576ccf10be11652fc309f3682a327a98847c596e"
+    },
+    {
+      "path": "src/assets/fonts/PlusJakartaSans_700Bold.ttf",
+      "sha1": "606f1b32433c9b6902d97c657f9b3a2f89bab582"
+    },
+    {
+      "path": "src/assets/fonts/PlusJakartaSans_800ExtraBold.ttf",
+      "sha1": "1f1ff730addefdfe324657b5db5056fb05b4b43b"
+    }
+  ]
+}

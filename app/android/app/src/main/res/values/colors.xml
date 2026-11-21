@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cores do guia de identidade do Doa Aqui (src/tema/index.ts). -->
+<resources>
+    <color name="coral500">#E8634A</color>
+    <color name="creme">#FBF6EF</color>
+</resources>

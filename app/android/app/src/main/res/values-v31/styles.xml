@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- Android 12+: tela de abertura do sistema em coral com a marca do Doa Aqui. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:windowBackground">@color/creme</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowSplashScreenBackground">@color/coral500</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_icone</item>
+    </style>
+
+</resources>

@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- Tema claro do app: fundo creme enquanto o JavaScript carrega e ícones escuros na barra de status. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:windowBackground">@color/creme</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+</resources>
