@@ -32,13 +32,14 @@ com um e-mail que a equipe consiga abrir.
 
 | Papel no Doa Aqui | Tipo de conta | E-mail (login) | Senha |
 | --- | --- | --- | --- |
-| Administrador | Pessoa física | `bianca@doaaqui.com.br` | `ThvkSP2gwB5F99!` |
-| Usuário (doador) | ONG | `vitor@doaaqui.com.br` | `TIdUk__pkr1le9!` |
-| Usuário (interessado) | Pessoa física | `alfred@doaaqui.com.br` | `Thd1kO8tw8NtV9!` |
+| Administrador | Pessoa física | `bianca@doaaqui.com.br` | `12345678` |
+| Usuário (doador) | ONG | `vitor@doaaqui.com.br` | `12345678` |
+| Usuário (interessado) | Pessoa física | `alfred@doaaqui.com.br` | `12345678` |
 
 Cuidados:
 
-- O repositório é privado. Se ele for tornado público, troque as senhas ou exclua essas contas antes,
+- Desde 22/11/2026 as três contas usam a mesma senha simples, para facilitar a apresentação. O repositório
+  é privado; se ele for tornado público, troque as senhas ou exclua essas contas antes,
   porque a conta de administrador consegue desativar anúncios e bloquear usuários.
 - Não troque a senha dessas contas pelo app: os testes automáticos (`supabase/testes/.env`) dependem delas.
   Se trocar, atualize esta tabela e o arquivo `.env` dos testes.
