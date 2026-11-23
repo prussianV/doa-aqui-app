@@ -27,6 +27,22 @@ Isso abre o emulador Android, instala o app e o abre. Requisitos, comandos de de
 telas estão em [`app/README.md`](app/README.md). As contas de teste (administradora, doador e interessado)
 estão em [`supabase/README.md`](supabase/README.md).
 
+## Trabalhar em mais de um computador
+
+O projeto é desenvolvido em dois computadores (Linux e Windows) e o GitHub é o ponto de encontro. Antes de
+começar a trabalhar e depois de terminar, rode na raiz do repositório:
+
+```bash
+node scripts/sincronizar.mjs
+```
+
+O script faz o commit das suas alterações (pergunta a mensagem), traz o que o outro computador enviou e envia
+o que é seu. Se o mesmo trecho tiver mudado nos dois lados, ele para e explica como resolver o conflito.
+
+Em um computador novo: `git clone https://github.com/prussianV/doa-aqui-app.git`, depois `cd app && npm install`.
+Os arquivos que não vão para o Git (`app/android/local.properties` e `supabase/testes/.env`) estão listados
+em [`CLAUDE.md`](CLAUDE.md).
+
 ## Testes
 
 ```bash
